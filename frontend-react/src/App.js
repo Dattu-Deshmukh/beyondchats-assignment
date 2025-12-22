@@ -160,15 +160,49 @@ const App = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/articles`
+        'https://beyondchats-assignment-production.up.railway.app/api/articles'
       );
+      
+      console.log('📡 Response status:', response.status);
+      
       if (!response.ok) throw new Error('Failed to fetch articles');
+      
       const result = await response.json();
       
-      // Handle paginated response structure
-      const articlesData = result?.data?.data || result?.data || result || [];
+      // 🔍 DEBUG LOGS - Check your browser console
+      console.log('===== API RESPONSE DEBUG =====');
+      console.log('1. Full API Response:', result);
+      console.log('2. result.data:', result.data);
+      console.log('3. result.data.data:', result.data?.data);
+      console.log('4. Type of result:', typeof result);
+      console.log('5. Is result an array?', Array.isArray(result));
+      console.log('6. Is result.data an array?', Array.isArray(result.data));
+      console.log('7. Is result.data.data an array?', Array.isArray(result.data?.data));
+      
+      // Try multiple possible structures
+      let articlesData = [];
+      
+      if (Array.isArray(result)) {
+        articlesData = result;
+        console.log('✅ Using: result (direct array)');
+      } else if (Array.isArray(result?.data?.data)) {
+        articlesData = result.data.data;
+        console.log('✅ Using: result.data.data (paginated)');
+      } else if (Array.isArray(result?.data)) {
+        articlesData = result.data;
+        console.log('✅ Using: result.data');
+      } else {
+        console.log('❌ Could not find articles array in response');
+      }
+      
+      console.log('8. Final articles array:', articlesData);
+      console.log('9. Articles count:', articlesData.length);
+      console.log('10. First article (if exists):', articlesData[0]);
+      console.log('==============================');
+      
       setArticles(articlesData);
     } catch (err) {
+      console.error('❌ Fetch error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -181,6 +215,7 @@ const App = () => {
   };
 
   const truncateText = (text, maxLength = 180) => {
+    if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength).trim() + '...';
   };
@@ -249,8 +284,8 @@ const App = () => {
 
           {!loading && !error && articles.length > 0 && (
             <div className="articles-grid">
-              {articles.map((article) => (
-                <article key={article.id} className="article-card" style={{ animationDelay: `${articles.indexOf(article) * 0.1}s` }}>
+              {articles.map((article, index) => (
+                <article key={article.id || index} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="article-header">
                     <span className="article-badge">Enhanced</span>
                     <time className="article-date">{formatDate(article.created_at)}</time>
