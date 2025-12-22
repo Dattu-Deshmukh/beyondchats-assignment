@@ -143,7 +143,6 @@
 // };
 
 // export default App;
-
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
@@ -159,50 +158,42 @@ const App = () => {
   const fetchArticles = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const response = await fetch(
-        'https://beyondchats-assignment-production.up.railway.app/api/articles'
+        'https://beyondchats-assignment-production.up.railway.app/api/articles',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        }
       );
       
-      console.log('📡 Response status:', response.status);
-      
-      if (!response.ok) throw new Error('Failed to fetch articles');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const result = await response.json();
       
-      // 🔍 DEBUG LOGS - Check your browser console
-      console.log('===== API RESPONSE DEBUG =====');
-      console.log('1. Full API Response:', result);
-      console.log('2. result.data:', result.data);
-      console.log('3. result.data.data:', result.data?.data);
-      console.log('4. Type of result:', typeof result);
-      console.log('5. Is result an array?', Array.isArray(result));
-      console.log('6. Is result.data an array?', Array.isArray(result.data));
-      console.log('7. Is result.data.data an array?', Array.isArray(result.data?.data));
+      // Your API returns: { success: true, data: { current_page: 1, data: [...] } }
+      let articlesArray = [];
       
-      // Try multiple possible structures
-      let articlesData = [];
-      
-      if (Array.isArray(result)) {
-        articlesData = result;
-        console.log('✅ Using: result (direct array)');
-      } else if (Array.isArray(result?.data?.data)) {
-        articlesData = result.data.data;
-        console.log('✅ Using: result.data.data (paginated)');
-      } else if (Array.isArray(result?.data)) {
-        articlesData = result.data;
-        console.log('✅ Using: result.data');
-      } else {
-        console.log('❌ Could not find articles array in response');
+      if (result.success && result.data && Array.isArray(result.data.data)) {
+        articlesArray = result.data.data;
+      } else if (result.data && Array.isArray(result.data.data)) {
+        articlesArray = result.data.data;
+      } else if (result.data && Array.isArray(result.data)) {
+        articlesArray = result.data;
+      } else if (Array.isArray(result)) {
+        articlesArray = result;
       }
       
-      console.log('8. Final articles array:', articlesData);
-      console.log('9. Articles count:', articlesData.length);
-      console.log('10. First article (if exists):', articlesData[0]);
-      console.log('==============================');
+      setArticles(articlesArray);
       
-      setArticles(articlesData);
     } catch (err) {
-      console.error('❌ Fetch error:', err);
+      console.error('Error fetching articles:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -210,12 +201,17 @@ const App = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    if (!dateString) return 'No date';
+    try {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-US', options);
+    } catch (e) {
+      return 'Invalid date';
+    }
   };
 
   const truncateText = (text, maxLength = 180) => {
-    if (!text) return '';
+    if (!text) return 'No content available';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength).trim() + '...';
   };
@@ -285,13 +281,21 @@ const App = () => {
           {!loading && !error && articles.length > 0 && (
             <div className="articles-grid">
               {articles.map((article, index) => (
-                <article key={article.id || index} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
+                <article 
+                  key={article.id || index} 
+                  className="article-card" 
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
                   <div className="article-header">
                     <span className="article-badge">Enhanced</span>
-                    <time className="article-date">{formatDate(article.created_at)}</time>
+                    <time className="article-date">
+                      {formatDate(article.created_at || article.updated_at)}
+                    </time>
                   </div>
                   
-                  <h3 className="article-title">{article.title}</h3>
+                  <h3 className="article-title">
+                    {article.title || 'Untitled Article'}
+                  </h3>
                   
                   <p className="article-content">
                     {truncateText(article.content)}
@@ -299,7 +303,7 @@ const App = () => {
                   
                   <div className="article-footer">
                     <a 
-                      href={article.source_url} 
+                      href={article.source_url || '#'} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="read-more-button"
