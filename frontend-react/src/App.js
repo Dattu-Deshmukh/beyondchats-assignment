@@ -31,6 +31,7 @@ const App = () => {
   };
 
   const truncateText = (text, maxLength = 180) => {
+    if (!text) return 'Content not available';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength).trim() + '...';
   };
@@ -133,7 +134,7 @@ const App = () => {
       <footer className="footer">
         <div className="container">
           <p className="footer-text">
-            © 2024 BeyondChats. Powered by AI to bring you better content.
+            © 2025 BeyondChats. Powered by AI to bring you better content.
           </p>
         </div>
       </footer>
