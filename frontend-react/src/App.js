@@ -160,11 +160,14 @@ const App = () => {
     try {
       setLoading(true);
       const response = await fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/api/articles`
+        `${process.env.REACT_APP_API_BASE_URL}/api/articles`
       );
       if (!response.ok) throw new Error('Failed to fetch articles');
-      const data = await response.json();
-      setArticles(data);
+      const result = await response.json();
+      
+      // Handle paginated response structure
+      const articlesData = result?.data?.data || result?.data || result || [];
+      setArticles(articlesData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -246,8 +249,8 @@ const App = () => {
 
           {!loading && !error && articles.length > 0 && (
             <div className="articles-grid">
-              {articles.map((article, index) => (
-                <article key={index} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
+              {articles.map((article) => (
+                <article key={article.id} className="article-card" style={{ animationDelay: `${articles.indexOf(article) * 0.1}s` }}>
                   <div className="article-header">
                     <span className="article-badge">Enhanced</span>
                     <time className="article-date">{formatDate(article.created_at)}</time>
