@@ -159,7 +159,9 @@ const App = () => {
   const fetchArticles = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://beyondchats-assignment-production.up.railway.app/api/articles');
+      const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/articles`
+      );
       if (!response.ok) throw new Error('Failed to fetch articles');
       const data = await response.json();
       setArticles(data);
