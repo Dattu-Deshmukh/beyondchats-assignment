@@ -105,7 +105,7 @@ const App = () => {
                     <time className="article-date">{formatDate(article.created_at)}</time>
                   </div>
                   
-                  <h3 className="article-title">{article.title}</h3>
+                  <h3 className="article-title">{article.title || 'Untitled Article'}</h3>
                   
                   <p className="article-content">
                     {truncateText(article.content)}
