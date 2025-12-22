@@ -1,153 +1,156 @@
-# BeyondChats Backend Assignment
+BeyondChats Backend Assignment
 
-This repository contains the backend implementation for the BeyondChats assignment.  
-The backend is built using **Laravel** and provides REST APIs for sending chat messages and retrieving chat history with database persistence.
+A Laravel-based backend application that scrapes blog articles from the BeyondChats website, stores them in a database, and exposes RESTful APIs to manage and retrieve articles with search, pagination, and validation.
 
----
+🚀 Features
+Phase 1
 
-## 🚀 Features
+Scrapes oldest 5 blog articles from BeyondChats
 
-- RESTful API built with Laravel
-- Message validation
-- Persistent storage using SQLite
-- Fetch chat history with pagination
-- Clean MVC architecture
-- Easy local setup (no heavy database installation)
+Stores articles in the database
 
----
+Artisan command for scraping (clean & reusable)
 
-## 🛠 Tech Stack
+REST APIs for article management (CRUD)
 
-- **Language:** PHP 8.2
-- **Framework:** Laravel 9
-- **Database:** SQLite
-- **ORM:** Eloquent
-- **API Style:** REST
+Phase 2
 
----
+Search articles by title
 
-## 📂 Project Structure (Important Files)
+Pagination support
 
-backend-laravel/
-├── app/
-│ ├── Http/Controllers/Api/ChatController.php
-│ └── Models/ChatMessage.php
-├── database/
-│ ├── migrations/
-│ └── database.sqlite
-├── routes/
-│ └── api.php
-├── .env
-└── README.md
+Request validation with proper HTTP status codes
 
-yaml
-Copy code
+Clean JSON API responses
 
----
+🛠 Tech Stack
 
-## ⚙️ Setup Instructions
+Backend: Laravel 9
 
-Follow these steps to run the project locally.
+Language: PHP 8.2
 
-### 1️⃣ Clone the Repository
-```bash
-git clone <repository-url>
-cd backend-laravel
+Database: SQLite
+
+HTTP Client: Guzzle
+
+Scraping: Symfony DomCrawler
+
+API Testing: Postman
+
+📁 Project Structure (Important Files)
+app/
+ ├── Console/Commands/ScrapeBeyondChats.php
+ ├── Http/Controllers/Api/ArticleController.php
+ └── Models/Article.php
+
+database/
+ └── migrations/xxxx_create_articles_table.php
+
+routes/
+ └── api.php
+
+⚙️ Setup Instructions
+1️⃣ Clone the Repository
+git clone <your-repo-url>
+cd beyondchats-assignment/backend-laravel
+
 2️⃣ Install Dependencies
-bash
-Copy code
 composer install
-3️⃣ Environment Configuration
-bash
-Copy code
+
+3️⃣ Environment Setup
+
+Create .env file:
+
 cp .env.example .env
+
+
+Generate application key:
+
 php artisan key:generate
-Update the database configuration in .env:
 
-env
-Copy code
-DB_CONNECTION=sqlite
-4️⃣ Create SQLite Database
-bash
-Copy code
-type nul > database/database.sqlite
-5️⃣ Run Migrations
-bash
-Copy code
+4️⃣ Database Setup
+
+This project uses SQLite.
+
+Create database file:
+
+touch database/database.sqlite
+
+
+Run migrations:
+
 php artisan migrate
-6️⃣ Start the Server
-bash
-Copy code
+
+▶️ Run the Application
+
+Start the Laravel server:
+
 php artisan serve
-The backend server will start at:
 
-cpp
-Copy code
+
+Server runs at:
+
 http://127.0.0.1:8000
-🔌 API Endpoints
-➤ Send Chat Message
-POST /api/chat
 
-Request Body:
+🕷 Scrape BeyondChats Articles
 
-json
-Copy code
+Run the scraper command:
+
+php artisan scrape:beyondchats
+
+
+✔ Scrapes the oldest 5 articles
+✔ Safe to run multiple times (no duplicates)
+
+📡 API Endpoints
+🔹 Get Articles (with pagination & search)
+GET /api/articles
+GET /api/articles?search=chat
+
+🔹 Get Single Article
+GET /api/articles/{id}
+
+🔹 Create Article
+POST /api/articles
+
+
+Request Body (JSON):
+
 {
-  "message": "Hello BeyondChats"
+  "title": "Sample Article",
+  "source_url": "https://example.com",
+  "content": "Optional content"
 }
-Response:
 
-json
-Copy code
+🔹 Update Article
+PUT /api/articles/{id}
+
+🔹 Delete Article
+DELETE /api/articles/{id}
+
+⚠️ Validation & Error Handling
+
+Invalid requests return 422 Unprocessable Content
+
+Errors are returned in JSON format
+
+Example response:
+
 {
-  "status": "success",
-  "reply": "You said: Hello BeyondChats"
-}
-➤ Fetch Chat History (Paginated)
-GET /api/chats?page=1
-
-Response:
-
-json
-Copy code
-{
-  "status": "success",
-  "data": {
-    "current_page": 1,
-    "data": [
-      {
-        "id": 1,
-        "message": "Hello BeyondChats",
-        "reply": "You said: Hello BeyondChats",
-        "created_at": "2025-01-01T10:00:00.000000Z",
-        "updated_at": "2025-01-01T10:00:00.000000Z"
-      }
-    ],
-    "per_page": 10
+  "message": "The title field is required.",
+  "errors": {
+    "title": ["The title field is required."]
   }
 }
-🧠 Design Decisions
-SQLite is used to keep setup lightweight and evaluation-friendly.
 
-Laravel’s database abstraction allows easy switching to MySQL or PostgreSQL for production.
+🧪 Testing
 
-Pagination is added to prevent large payloads and improve scalability.
+APIs tested using Postman
 
-Validation ensures clean and safe input handling.
+Accept: application/json header used for proper API responses
 
-🔄 Switching to MySQL (Optional)
-To use MySQL instead of SQLite, update .env:
+📝 Notes
 
-env
-Copy code
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-Then run:
+SSL verification is disabled only for scraping due to Windows CA certificate limitations.
 
-bash
-Copy code
-php artisan migrate
+In production, SSL certificates should be configured properly.
