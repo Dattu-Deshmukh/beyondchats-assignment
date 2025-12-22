@@ -11,7 +11,7 @@ This project was built as part of a technical assignment and intentionally focus
 ## 🌐 Live Application Links
 
 ### 🔹 Frontend (Vercel)
-👉 https://beyondchats-frontend-rose.vercel.app
+👉 https://frontend-react-two-ecru.vercel.app
 
 ### 🔹 Backend API (Railway)
 👉 https://beyondchats-assignment-production.up.railway.app/api/articles
