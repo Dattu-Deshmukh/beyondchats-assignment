@@ -11,8 +11,8 @@ use App\Http\Controllers\Api\ArticleController;
 |--------------------------------------------------------------------------
 */
 
-// Route::post('/chat', [ChatController::class, 'sendMessage']);
-// Route::get('/chats', [ChatController::class, 'getChats']);
+Route::post('/chat', [ChatController::class, 'sendMessage']);
+Route::get('/chats', [ChatController::class, 'getChats']);
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{id}', [ArticleController::class, 'show']);
 Route::post('/articles', [ArticleController::class, 'store']);
