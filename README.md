@@ -90,8 +90,8 @@ beyondchats-assignment/
 
 ```
 
-##🖥️ Running the Project Locally
-###✅ Prerequisites
+## 🖥️ Running the Project Locally
+### ✅ Prerequisites
 
 Make sure you have installed:
 
@@ -101,17 +101,17 @@ Make sure you have installed:
 -Composer
 -Git
 
-##🔧 Backend Setup (Laravel)
-###1️⃣ Clone the repository
+## 🔧 Backend Setup (Laravel)
+### 1️⃣ Clone the repository
 ```
 git clone https://github.com/Dattu-Deshmukh/beyondchats-assignment.git
 cd beyondchats-assignment/backend-laravel
 ```
-###2️⃣ Install dependencies
+### 2️⃣ Install dependencies
 ```
 composer install
 ```
-###3️⃣ Create environment file
+### 3️⃣ Create environment file
 ```
 cp .env.example .env
 ```
@@ -122,7 +122,7 @@ APP_DEBUG=true
 DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database/database.sqlite
 ```
-###4️⃣ Create SQLite database
+### 4️⃣ Create SQLite database
 ```
 mkdir database
 touch database/database.sqlite
@@ -131,41 +131,41 @@ touch database/database.sqlite
 ```
 New-Item database/database.sqlite -ItemType File
 ```
-###5️⃣ Generate application key
+### 5️⃣ Generate application key
 ```
 php artisan key:generate
 ```
-###6️⃣ Run migrations
+### 6️⃣ Run migrations
 ```
 php artisan migrate
 ```
-###7️⃣ Start backend server
+### 7️⃣ Start backend server
 ```
 php artisan serve
 ```
-##Backend will run at:
+## Backend will run at:
 ```
 http://127.0.0.1:8000
 ```
-##Test API:
+## Test API:
 ```
 http://127.0.0.1:8000/api/articles
 ```
-##🌐 Frontend Setup (React)
-###1️⃣ Navigate to frontend
+## 🌐 Frontend Setup (React)
+### 1️⃣ Navigate to frontend
 ```
 cd ../frontend-react
 ```
-###2️⃣ Install dependencies
+### 2️⃣ Install dependencies
 ```
 npm install
 ```
-###3️⃣ Update API URL (for local backend)
+### 3️⃣ Update API URL (for local backend)
 In src/App.js:
 ```
 fetch('http://127.0.0.1:8000/api/articles')
 ```
-4️⃣ Start frontend
+### 4️⃣ Start frontend
 ```
 npm start
 ```
@@ -174,8 +174,8 @@ Frontend will run at:
 http://localhost:3000
 ```
 
-##🔌 API Documentation
-###🔹 Get Articles
+## 🔌 API Documentation
+### 🔹 Get Articles
 
 Endpoint
 ```
@@ -192,7 +192,7 @@ GET /api/articles
   }
 }
 ```
-##🧩 Future Enhancements
+## 🧩 Future Enhancements
 🤖 AI content summarization
 
 🔍 Search & filtering
@@ -204,8 +204,8 @@ GET /api/articles
 📊 Analytics dashboard
 
 🧠 AI-generated insights
-
-##👨‍💻 Author
+ 
+## 👨‍💻 Author
 Dattu Deshmukh
 Final Year B.Tech – Computer Science Engineering
 Full-Stack Developer (React • Laravel • APIs)
