@@ -67,7 +67,7 @@ This project was built as part of a technical assignment and intentionally focus
 ---
 
 ## 📁 Project Structure
-
+```
 beyondchats-assignment/
 │
 ├── backend-laravel/
@@ -88,37 +88,110 @@ beyondchats-assignment/
 │
 └── README.md
 
----
+```
 
-## 🔌 API Documentation
+##🖥️ Running the Project Locally
+###✅ Prerequisites
 
-### 🔹 Get Articles
+Make sure you have installed:
+
+-Node.js (v18+ recommended)
+-npm
+-PHP 8.2
+-Composer
+-Git
+
+##🔧 Backend Setup (Laravel)
+###1️⃣ Clone the repository
+```
+git clone https://github.com/Dattu-Deshmukh/beyondchats-assignment.git
+cd beyondchats-assignment/backend-laravel
+```
+###2️⃣ Install dependencies
+```
+composer install
+```
+###3️⃣ Create environment file
+```
+cp .env.example .env
+```
+Update .env:
+```
+APP_ENV=local
+APP_DEBUG=true
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database/database.sqlite
+```
+###4️⃣ Create SQLite database
+```
+mkdir database
+touch database/database.sqlite
+```
+(Windows PowerShell)
+```
+New-Item database/database.sqlite -ItemType File
+```
+###5️⃣ Generate application key
+```
+php artisan key:generate
+```
+###6️⃣ Run migrations
+```
+php artisan migrate
+```
+###7️⃣ Start backend server
+```
+php artisan serve
+```
+##Backend will run at:
+```
+http://127.0.0.1:8000
+```
+##Test API:
+```
+http://127.0.0.1:8000/api/articles
+```
+##🌐 Frontend Setup (React)
+###1️⃣ Navigate to frontend
+```
+cd ../frontend-react
+```
+###2️⃣ Install dependencies
+```
+npm install
+```
+###3️⃣ Update API URL (for local backend)
+In src/App.js:
+```
+fetch('http://127.0.0.1:8000/api/articles')
+```
+4️⃣ Start frontend
+```
+npm start
+```
+Frontend will run at:
+```
+http://localhost:3000
+```
+
+##🔌 API Documentation
+###🔹 Get Articles
+
+Endpoint
+```
 GET /api/articles
-
-bash
-Copy code
-
-### 🔹 Example Response
-```json
+```
+🔹 Example Response
+```
 {
   "success": true,
   "data": {
     "current_page": 1,
-    "data": [
-      {
-        "id": 1,
-        "title": "Sample Article",
-        "content": "Enhanced article content...",
-        "source_url": "https://example.com",
-        "created_at": "2025-01-01"
-      }
-    ],
+    "data": [],
     "total": 0
   }
 }
 ```
-
-
 ##🧩 Future Enhancements
 🤖 AI content summarization
 
