@@ -1,156 +1,215 @@
-BeyondChats Backend Assignment
 
-A Laravel-based backend application that scrapes blog articles from the BeyondChats website, stores them in a database, and exposes RESTful APIs to manage and retrieve articles with search, pagination, and validation.
+# 🚀 BeyondChats – AI-Powered Article Enhancement Platform
 
-🚀 Features
-Phase 1
+BeyondChats is a **full-stack web application** designed to fetch, enhance, and display articles through a clean, modern interface.  
+The project demonstrates **real-world full-stack development**, including backend APIs, frontend rendering, deployment, debugging, and production stability.
 
-Scrapes oldest 5 blog articles from BeyondChats
+This project was built as part of a technical assignment and intentionally focuses on **clarity, reliability, and production-readiness**.
 
-Stores articles in the database
+---
 
-Artisan command for scraping (clean & reusable)
+## 🌐 Live Application Links
 
-REST APIs for article management (CRUD)
+### 🔹 Frontend (Vercel)
+👉 https://frontend-react-two-ecru.vercel.app
 
-Phase 2
+### 🔹 Backend API (Railway)
+👉 https://beyondchats-assignment-production.up.railway.app/api/articles
 
-Search articles by title
+---
 
-Pagination support
+## ✨ Key Highlights
 
-Request validation with proper HTTP status codes
+- 📄 Fetches paginated articles from a REST API
+- ⚡ Fast and responsive React UI
+- 🧠 AI-ready backend architecture (extendable)
+- 🧩 Skeleton loaders for better UX
+- ❌ Safe handling of empty / null API data
+- 🌍 Deployed and tested in **production**
+- 🛠️ Debugged real production errors (500s, null crashes)
 
-Clean JSON API responses
+---
 
-🛠 Tech Stack
+## 🧠 Functional Overview
 
-Backend: Laravel 9
+1. **Backend (Laravel)**  
+   - Exposes `/api/articles`
+   - Stores articles in SQLite
+   - Returns structured JSON
+   - Handles pagination
+   - Production-ready configuration
 
-Language: PHP 8.2
+2. **Frontend (React)**  
+   - Fetches articles from Railway API
+   - Displays articles in card layout
+   - Shows skeleton loaders while loading
+   - Shows empty state when no articles exist
+   - Prevents runtime crashes using defensive checks
 
-Database: SQLite
+---
 
-HTTP Client: Guzzle
+## 🏗️ Tech Stack
 
-Scraping: Symfony DomCrawler
+### 🖥️ Frontend
+- React.js
+- JavaScript (ES6+)
+- CSS (Custom modern UI)
+- Fetch API
+- Deployment: **Vercel**
 
-API Testing: Postman
+### 🧪 Backend
+- Laravel (PHP 8.2)
+- REST API
+- SQLite database
+- Artisan migrations
+- Deployment: **Railway**
 
-📁 Project Structure (Important Files)
-app/
- ├── Console/Commands/ScrapeBeyondChats.php
- ├── Http/Controllers/Api/ArticleController.php
- └── Models/Article.php
+---
 
-database/
- └── migrations/xxxx_create_articles_table.php
+## 📁 Project Structure
+```
+beyondchats-assignment/
+│
+├── backend-laravel/
+│ ├── app/
+│ ├── routes/api.php
+│ ├── database/
+│ │ └── database.sqlite
+│ ├── public/
+│ └── .env
+│
+├── frontend-react/
+│ ├── src/
+│ │ ├── App.js
+│ │ ├── App.css
+│ │ └── index.js
+│ ├── public/
+│ └── package.json
+│
+└── README.md
 
-routes/
- └── api.php
+```
 
-⚙️ Setup Instructions
-1️⃣ Clone the Repository
-git clone <your-repo-url>
+## 🖥️ Running the Project Locally
+### ✅ Prerequisites
+
+Make sure you have installed:
+
+-Node.js (v18+ recommended)
+-npm
+-PHP 8.2
+-Composer
+-Git
+
+## 🔧 Backend Setup (Laravel)
+### 1️⃣ Clone the repository
+```
+git clone https://github.com/Dattu-Deshmukh/beyondchats-assignment.git
 cd beyondchats-assignment/backend-laravel
-
-2️⃣ Install Dependencies
+```
+### 2️⃣ Install dependencies
+```
 composer install
-
-3️⃣ Environment Setup
-
-Create .env file:
-
+```
+### 3️⃣ Create environment file
+```
 cp .env.example .env
-
-
-Generate application key:
-
-php artisan key:generate
-
-4️⃣ Database Setup
-
-This project uses SQLite.
-
-Create database file:
-
+```
+Update .env:
+```
+APP_ENV=local
+APP_DEBUG=true
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database/database.sqlite
+```
+### 4️⃣ Create SQLite database
+```
+mkdir database
 touch database/database.sqlite
-
-
-Run migrations:
-
+```
+(Windows PowerShell)
+```
+New-Item database/database.sqlite -ItemType File
+```
+### 5️⃣ Generate application key
+```
+php artisan key:generate
+```
+### 6️⃣ Run migrations
+```
 php artisan migrate
-
-▶️ Run the Application
-
-Start the Laravel server:
-
+```
+### 7️⃣ Start backend server
+```
 php artisan serve
-
-
-Server runs at:
-
+```
+## Backend will run at:
+```
 http://127.0.0.1:8000
+```
+## Test API:
+```
+http://127.0.0.1:8000/api/articles
+```
+## 🌐 Frontend Setup (React)
+### 1️⃣ Navigate to frontend
+```
+cd ../frontend-react
+```
+### 2️⃣ Install dependencies
+```
+npm install
+```
+### 3️⃣ Update API URL (for local backend)
+In src/App.js:
+```
+fetch('http://127.0.0.1:8000/api/articles')
+```
+### 4️⃣ Start frontend
+```
+npm start
+```
+Frontend will run at:
+```
+http://localhost:3000
+```
 
-🕷 Scrape BeyondChats Articles
+## 🔌 API Documentation
+### 🔹 Get Articles
 
-Run the scraper command:
-
-php artisan scrape:beyondchats
-
-
-✔ Scrapes the oldest 5 articles
-✔ Safe to run multiple times (no duplicates)
-
-📡 API Endpoints
-🔹 Get Articles (with pagination & search)
+Endpoint
+```
 GET /api/articles
-GET /api/articles?search=chat
-
-🔹 Get Single Article
-GET /api/articles/{id}
-
-🔹 Create Article
-POST /api/articles
-
-
-Request Body (JSON):
-
+```
+🔹 Example Response
+```
 {
-  "title": "Sample Article",
-  "source_url": "https://example.com",
-  "content": "Optional content"
-}
-
-🔹 Update Article
-PUT /api/articles/{id}
-
-🔹 Delete Article
-DELETE /api/articles/{id}
-
-⚠️ Validation & Error Handling
-
-Invalid requests return 422 Unprocessable Content
-
-Errors are returned in JSON format
-
-Example response:
-
-{
-  "message": "The title field is required.",
-  "errors": {
-    "title": ["The title field is required."]
+  "success": true,
+  "data": {
+    "current_page": 1,
+    "data": [],
+    "total": 0
   }
 }
+```
+## 🧩 Future Enhancements
+🤖 AI content summarization
 
-🧪 Testing
+🔍 Search & filtering
 
-APIs tested using Postman
+🧾 Article detail pages
 
-Accept: application/json header used for proper API responses
+🔐 Authentication (admin panel)
 
-📝 Notes
+📊 Analytics dashboard
 
-SSL verification is disabled only for scraping due to Windows CA certificate limitations.
+🧠 AI-generated insights
+ 
+## 👨‍💻 Author
+Dattu Deshmukh
+Final Year B.Tech – Computer Science Engineering
+Full-Stack Developer (React • Laravel • APIs)
 
-In production, SSL certificates should be configured properly.
+GitHub: https://github.com/Dattu-Deshmukh
+
+LinkedIn: https://www.linkedin.com/in/dattudeshmukh2
